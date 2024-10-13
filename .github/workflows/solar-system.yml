@@ -71,16 +71,21 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+        - name: set lower case owner name
+          run: |
+             echo "OWNER_LC=${OWNER,,}" >>${GITHUB_ENV}
+          env:
+             OWNER: '${{ github.repository_owner }}'
         - uses: docker/login-action@v2.2.0
           with:
             registry: ghcr.io
-            username: inderpreetsaini
+            username: ${{ env.OWNER_LC }}
             password: ${{ secrets.GITHUB_TOKEN }}
         - uses: docker/build-push-action@v4
           with:
             context: .
             push: true
-            tags: 'ghcr.io/inderpreetsaini/solar-system:${{ github.sha }}'
+            tags: 'ghcr.io/${{ env.OWNER_LC }}/solar-system:${{ github.sha }}'
 
   
       

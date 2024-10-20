@@ -90,7 +90,8 @@ jobs:
     dev-deploy:
       runs-on: ubuntu-latest
       needs: docker
-      environment: development
+      environment: 
+        name: development
       steps:
         - uses: actions/checkout@v4
         
@@ -100,7 +101,7 @@ jobs:
         - uses: azure/k8s-set-context@v3.0
           with:
              method: kubeconfig
-             kubeconfig: ${{ secrets.KUBECONFIG }}
+             kubeconfig: '${{ secrets.KUBECONFIG }}'
 
         - run: kubectl version --short -o yaml
           
